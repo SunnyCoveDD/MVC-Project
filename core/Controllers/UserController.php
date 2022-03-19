@@ -33,7 +33,48 @@ class UserController extends BaseController
         # Шифруем пароль в SHA1
         $_POST['password'] = sha1($_POST['password']);
         $user = new User();
+
+        #Логин уникальный
+        if($user->isNotUniqueColumn('login', $_POST['login'])) {
+            $errors['login'][] = 'Логин не является уникальным';
+            return view('register', compact('errors'));
+        }
         $user = $user->create($_POST);
         return view('users/successRegister', compact('user'));
+    }
+
+    public function login()
+    {
+        return view('users/login');
+    }
+    public function loginPost()
+    {
+        $errors = [];
+        $errors = [];
+        if(!isset($_POST['login'])) $errors['login'][] = 'Нет поля login';
+        if(!isset($_POST['password'])) $errors['password'][] = 'Нет поля password';
+
+        if(empty($_POST['login'])) $errors['login'][] = 'Поле login не заполнено!';
+        if(empty($_POST['password'])) $errors['password'][] = 'Поле password не заполнено!';
+
+        if($errors != null)
+            return view('users/login', compact('errors'));
+        $User= new User();
+        $fUser = $User->where(
+            [
+                ['login', '=', $_POST['login']],
+                ['password', '=', sha1($_POST['password'])],
+            ]
+        );
+        $fUser = $User -> get();
+        #Если пользователь не найден, ошибка
+        if(count($fUser) == 0){
+            $errors['error_auth'][] = '';
+            return view('users/login', compact('errors'));
+        }
+        #Записываем в сессию id
+        $_SESSION['id'] = $fUser[0]['id'];
+
+        return header('Location: /');
     }
 }
