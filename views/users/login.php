@@ -1,10 +1,10 @@
 <?php
-$title = 'Регистрация в системе';
-@include_once __DIR__ . 'header.php';
+$title = 'Авторизация в системе';
+@include_once __DIR__ . '/../header.php';
 ?>
 
-<?= ( isset($_GET['error_auth'])
-    ? "<div class='alert alert-danger'>Логин и пароль неверны</div>"
+<?= ( isset($errors['error_auth'])
+    ? "<div class='alert alert-danger'>Логин и пароль не верный!</div>"
     : "" )
 ?>
     <div class="container">
@@ -22,7 +22,7 @@ $title = 'Регистрация в системе';
                         <input type="password" name="password" <?= $isError('password', true) ?> id="inputPassword" placeholder="Укажите пароль:" required>
                         <?= $isError('password') ?>
                     </div>
-                    <button type="submit" class="btn btn-primary">Авторизация</button>
+                    <button type="submit" class="btn btn-primary">Авторизацию</button>
                 </form>
             </div>
             <div class="col"></div>
@@ -30,4 +30,4 @@ $title = 'Регистрация в системе';
     </div>
 
 
-<?php @include_once __DIR__ . 'footer.php'; ?>
+<?php @include_once __DIR__ . '/../footer.php'; ?>

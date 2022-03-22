@@ -1,5 +1,4 @@
 <?php
-
     $title = 'Моя главная страница';
     $javascript = [
         ['src' => 'user.js', 'defer' => true]
