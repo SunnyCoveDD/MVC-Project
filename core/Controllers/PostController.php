@@ -60,7 +60,10 @@ class PostController extends BaseController
     {
         $posts = new Post();
         $post = $posts->find($_GET['id']);
-        return view('posts/first', compact('post', 'posts'));
+        $comments = new Comment();
+        $comments_list = $comments->join('users', ['user_id', 'id'])->where([ ['post_id','=', $_GET['id']] ]);
+
+        return view('posts/first', compact('post', 'posts', 'comments_list'));
     }
 
     public function commentCreate()
